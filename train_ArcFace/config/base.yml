@@ -1,0 +1,50 @@
+exp_name: 'efficientnetv2_rw_m_ArcFace_300_m052_s12_letterbox_emb512_pairs'
+outdir: './experiments/'
+
+num_gpu: 1
+
+dataset:
+    root: '/home/artem/projects/whales_hackathon/whales_dataset/Whale_ReId_2_mm'
+    train_list: '/home/artem/projects/whales_hackathon/whales_dataset/train.csv'
+    val_list: '/home/artem/projects/whales_hackathon/whales_dataset/val.csv'
+    val_pairs: '/home/artem/projects/whales_hackathon/whales_dataset/val_pairs_20k.csv'
+    val_path: '/home/artem/projects/whales_hackathon/whales_dataset/Whale_ReId_2_mm'
+    cropped: true
+    seed: 322
+    num_of_classes: 102
+    num_of_images: 28597
+    input_size: 300
+    padding: 0
+    batch_size: 64
+    augmentations: 'letterbox'
+    augmentations_valid: 'letterbox'
+    num_workers: 12
+
+
+model:
+    arch: 'efficientnetv2_rw_m'
+    embeddings: 512
+    dropout: 0.02
+    s: 12
+    m: 0.52
+
+train:
+    valmode: 'pairs' # 'simple'
+    fp16: true
+    optimizer: 'AdamW'
+    learning_rate: 0.000443
+    momentum: 0.9
+    weight_decay: 0.0018235327346030703
+    lr_schedule:
+        name: 'StepLR'
+        step_size: 1
+        gamma: 0.1
+        max_steps: 10
+        warmup_epoch: 2
+    n_epoch: 5
+    arcface:
+        s: 12
+        m: 0.4
+    label_smoothing: 0.1
+    eps: 0.01
+    freq_vis: 500
